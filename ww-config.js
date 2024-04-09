@@ -19,13 +19,12 @@ export default {
     properties: {
         items: {
             label: 'Items',
-            type: 'Info',
+            type: 'ObjectList',
             options: {
-                text: { en: 'Elements to repeat' },
+                useSchema: true,
             },
             settings: true,
             bindable: true,
-            defaultValue: [1, 2, 3],
         },
         valueFormula: {
             type: 'Formula',
@@ -36,7 +35,6 @@ export default {
                     : { item: null, index: 0 },
             }),
             settings: true,
-            defaultValue: { type: 'f', code: "context.mapping?.['item']" },
         },
         value: {
             type: 'Text',

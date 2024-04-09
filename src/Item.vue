@@ -1,13 +1,6 @@
 <template>
     <wwLayoutItemContext is-repeat :index="index" :data="data">
-        <wwElement
-            v-bind="container"
-            @click="select"
-            role="radio"
-            :aria-checked="isSelected"
-            tag="label"
-            :states="isSelected ? ['selected'] : null"
-        ></wwElement>
+        <wwElement v-bind="container" @click="select" role="radio" :aria-checked="isSelected" tag="label"></wwElement>
     </wwLayoutItemContext>
 </template>
 

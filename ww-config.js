@@ -12,6 +12,10 @@ export default {
         layout: ['flex', 'grid'],
     },
     states: ['readonly'],
+    triggerEvents: [
+        { name: 'change', label: { en: 'On change' }, event: { value: '' }, default: true },
+        { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
+    ],
     properties: {
         items: {
             label: 'Items',
@@ -45,6 +49,32 @@ export default {
             label: 'Name',
             settings: true,
             bindable: true,
+        },
+        readonly: {
+            label: { en: 'Read only', fr: 'Lecture seule' },
+            type: 'OnOff',
+            section: 'settings',
+            bindable: true,
+            defaultValue: false,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the input is in readonly: `true | false`',
+            },
+            /* wwEditor:end */
+        },
+        required: {
+            label: { en: 'Required' },
+            type: 'OnOff',
+            section: 'settings',
+            bindable: true,
+            defaultValue: false,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the input is in readonly: `true | false`',
+            },
+            /* wwEditor:end */
         },
         itemContainer: {
             hidden: true,

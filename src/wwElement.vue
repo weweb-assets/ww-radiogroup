@@ -8,7 +8,7 @@
             :container="content.itemContainer"
             :selectedValue="selectedValue"
             :valueFormula="content.valueFormula"
-            @update:selectedValue="setSelectedValue($event)"
+            @update:selectedValue="onChange"
         ></Item>
     </wwSimpleLayout>
 </template>
@@ -32,6 +32,14 @@ export default {
             '_wwRadioName',
             computed(() => props.content.name || props.wwElementState.name || `radio-${props.wwElementState.uid}'}`)
         );
+        provide(
+            '_wwRadioIsReadonly',
+            computed(() => props.content.readonly)
+        );
+        provide(
+            '_wwRadioIsRequired',
+            computed(() => props.content.required)
+        );
         const { value: selectedValue, setValue: setSelectedValue } = wwLib.wwVariable.useComponentVariable({
             uid: props.wwElementState.uid,
             name: 'value',
@@ -40,6 +48,20 @@ export default {
         });
 
         return { selectedValue, setSelectedValue };
+    },
+    watch: {
+        'content.value'(newValue) {
+            if (newValue === this.value) return;
+            this.setSelectedValue(newValue);
+            this.$emit('trigger-event', { name: 'initValueChange', event: { value: newValue } });
+        },
+    },
+    methods: {
+        onChange(newValue) {
+            if (newValue === this.selectedValue) return;
+            this.setSelectedValue(newValue);
+            this.$emit('trigger-event', { name: 'change', event: { value: newValue } });
+        },
     },
 };
 </script>

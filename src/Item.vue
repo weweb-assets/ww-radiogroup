@@ -13,6 +13,7 @@ export default {
         index: { type: Number, required: true },
         item: { required: true },
         valueFormula: { type: String, required: true },
+        readonly: { type: Boolean, required: true },
     },
     emits: ['update:selectedValue'],
     setup(props, context) {
@@ -27,6 +28,7 @@ export default {
         provide('_wwRadioValue', value);
 
         function select() {
+            if (props.readonly) return;
             context.emit('update:selectedValue', value.value);
         }
 

@@ -8,6 +8,7 @@
             :container="content.itemContainer"
             :selectedValue="selectedValue"
             :valueFormula="content.valueFormula"
+            :readonly="content.readonly"
             @update:selectedValue="onChange"
         ></Item>
     </wwSimpleLayout>

@@ -29,6 +29,7 @@ export default {
 
         function select() {
             if (props.readonly) return;
+            console.log('select', props, context, value);
             context.emit('update:selectedValue', value.value);
         }
 

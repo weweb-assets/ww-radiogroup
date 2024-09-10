@@ -3,9 +3,11 @@
         <template v-if="!content.repeat">
             <wwLayout path="slot">
                 <template #default="{ item }">
-                    <wwLayoutItem>
+                    <!-- <wwLayoutItem>
                         <wwElement v-bind="item" role="radio" tag="label" />
-                    </wwLayoutItem>
+                    </wwLayoutItem> -->
+
+                    <Item :item="item"></Item>
                 </template>
             </wwLayout>
         </template>

@@ -3,7 +3,7 @@
         <template v-if="!content.repeat">
             <wwLayout path="slot">
                 <template #default="{ item }">
-                    <Item :repeat="false" :item="item"></Item>
+                    <Item :repeat="false" :item="item" @update:selectedValue="onChange"></Item>
                 </template>
             </wwLayout>
         </template>
@@ -16,6 +16,7 @@
                 :container="content.itemContainer"
                 :valueFormula="content.valueFormula"
                 :readonly="content.readonly"
+                @update:selectedValue="onChange"
             ></Item>
         </template>
     </wwSimpleLayout>
@@ -47,6 +48,10 @@ export default {
         provide(
             '_wwRadioIsRequired',
             computed(() => props.content.required)
+        );
+        provide(
+            '_wwRepeat',
+            computed(() => props.content.repeat)
         );
         const { value: selectedValue, setValue: setSelectedValue } = wwLib.wwVariable.useComponentVariable({
             uid: props.wwElementState.uid,

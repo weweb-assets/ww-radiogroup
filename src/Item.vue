@@ -1,9 +1,9 @@
 <template>
     <wwLayoutItemContext v-if="repeat" is-repeat :index="index" :data="data">
-        <wwElement v-bind="container" @click="select" role="radio" :aria-checked="isSelected" tag="label"></wwElement>
+        <wwElement v-bind="container" @click="select" role="radio" :aria-checked="isSelected" tag="label" />
     </wwLayoutItemContext>
     <wwLayoutItem v-else>
-        <wwElement v-bind="item" @click="select" role="radio" :aria-checked="isSelected" tag="label"></wwElement>
+        <wwElement v-bind="item" @click="select" role="radio" :aria-checked="isSelected" tag="label" />
     </wwLayoutItem>
 </template>
 
@@ -33,7 +33,7 @@ export default {
 
         function select() {
             if (props.readonly) return;
-            console.log('select', props, context, value);
+            console.log('select', value.value);
             context.emit('update:selectedValue', value.value);
         }
 

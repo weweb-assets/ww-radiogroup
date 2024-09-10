@@ -25,6 +25,9 @@ export default {
         slot: {
             hidden: true,
             defaultValue: [],
+            navigator: {
+                hidden: content => content.repeat,
+            },
         },
         items: {
             label: 'Items',

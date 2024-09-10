@@ -11,7 +11,7 @@
 import { toRef, provide, computed, reactive } from 'vue';
 export default {
     props: {
-        repeat: { type: Boolean, required: true },
+        repeat: { type: Boolean, default: true },
         container: { type: Object, required: true },
         selectedValue: { type: undefined, required: true },
         index: { type: Number, required: true },

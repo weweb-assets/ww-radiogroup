@@ -1,16 +1,25 @@
 <template>
     <wwSimpleLayout role="radiogroup">
-        <Item
-            v-for="(item, index) in content.items"
-            :key="index"
-            :item="item"
-            :index="index"
-            :container="content.itemContainer"
-            :selectedValue="selectedValue"
-            :valueFormula="content.valueFormula"
-            :readonly="content.readonly"
-            @update:selectedValue="onChange"
-        ></Item>
+        <template v-if="!content.repeat">
+            <wwLayout path="slot">
+                <template #default="{ item }">
+                    <wwLayoutItem>
+                        <wwElement v-bind="item" role="radio" tag="label" />
+                    </wwLayoutItem>
+                </template>
+            </wwLayout>
+        </template>
+        <template v-else>
+            <Item
+                v-for="(item, index) in content.items"
+                :key="index"
+                :item="item"
+                :index="index"
+                :container="content.itemContainer"
+                :valueFormula="content.valueFormula"
+                :readonly="content.readonly"
+            ></Item>
+        </template>
     </wwSimpleLayout>
 </template>
 

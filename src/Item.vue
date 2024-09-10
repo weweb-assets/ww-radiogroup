@@ -1,13 +1,17 @@
 <template>
-    <wwLayoutItemContext is-repeat :index="index" :data="data">
+    <wwLayoutItemContext v-if="repeat" is-repeat :index="index" :data="data">
         <wwElement v-bind="container" @click="select" role="radio" :aria-checked="isSelected" tag="label"></wwElement>
     </wwLayoutItemContext>
+    <wwLayoutItem v-else>
+        <wwElement v-bind="item" @click="select" role="radio" :aria-checked="isSelected" tag="label"></wwElement>
+    </wwLayoutItem>
 </template>
 
 <script>
 import { toRef, provide, computed, reactive } from 'vue';
 export default {
     props: {
+        repeat: { type: Boolean, required: true },
         container: { type: Object, required: true },
         selectedValue: { type: undefined, required: true },
         index: { type: Number, required: true },

@@ -92,9 +92,5 @@ export default {
             hidden: true,
             defaultValue: { isWwObject: true, type: 'e081a0e1-0a3f-493a-916d-357bdef10b82', name: 'Radiogroup item' },
         },
-        itemContainerTest: {
-            hidden: true,
-            defaultValue: { isWwObject: true, type: 'e081a0e1-0a3f-493a-916d-357bdef10b82', name: 'Radiogroup item' },
-        },
     },
 };

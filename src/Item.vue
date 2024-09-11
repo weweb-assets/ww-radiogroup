@@ -1,10 +1,8 @@
 <template>
-    <wwLayoutItemContext v-if="repeat" is-repeat :index="index" :data="data">
+    <wwLayoutItemContext is-repeat :index="index" :data="data">
         <wwElement v-bind="container" @click="select" role="radio" :aria-checked="isSelected" tag="label" />
+        <wwElement v-bind="containerBis" @click="select" role="radio" :aria-checked="isSelected" tag="label" />
     </wwLayoutItemContext>
-    <wwLayoutItem v-else>
-        <wwElement v-bind="item" @click="select" role="radio" :aria-checked="isSelected" tag="label" />
-    </wwLayoutItem>
 </template>
 
 <script>
@@ -13,6 +11,7 @@ export default {
     props: {
         repeat: { type: Boolean, default: true },
         container: { type: Object, required: true },
+        containerBis: { type: Object, required: true },
         selectedValue: { type: undefined, required: true },
         index: { type: Number, required: true },
         item: { required: true },

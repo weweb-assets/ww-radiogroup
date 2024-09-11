@@ -1,24 +1,16 @@
 <template>
     <wwSimpleLayout role="radiogroup">
-        <template v-if="!content.repeat">
-            <wwLayout path="slot">
-                <template #default="{ item }">
-                    <Item :repeat="false" :item="item" @update:selectedValue="onChange"></Item>
-                </template>
-            </wwLayout>
-        </template>
-        <template v-else>
-            <Item
-                v-for="(item, index) in content.items"
-                :key="index"
-                :item="item"
-                :index="index"
-                :container="content.itemContainer"
-                :valueFormula="content.valueFormula"
-                :readonly="content.readonly"
-                @update:selectedValue="onChange"
-            ></Item>
-        </template>
+        <Item
+            v-for="(item, index) in content.items"
+            :key="index"
+            :item="item"
+            :index="index"
+            :container="content.itemContainer"
+            :containerBis="content.itemContainerTest"
+            :valueFormula="content.valueFormula"
+            :readonly="content.readonly"
+            @update:selectedValue="onChange"
+        ></Item>
     </wwSimpleLayout>
 </template>
 
@@ -59,6 +51,7 @@ export default {
             type: 'any',
             defaultValue: computed(() => props.content.value),
         });
+        provide('_wwRadioSetSelectedValue', setSelectedValue);
 
         return { selectedValue, setSelectedValue };
     },

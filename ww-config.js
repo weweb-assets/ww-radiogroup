@@ -33,16 +33,6 @@ export default {
             settings: true,
             bindable: true,
         },
-        valueFormula: {
-            type: 'Formula',
-            label: 'Value per item',
-            options: content => ({
-                template: Array.isArray(content.items)
-                    ? { item: content.items[0], index: 0 }
-                    : { item: null, index: 0 },
-            }),
-            settings: true,
-        },
         value: {
             type: 'Text',
             label: 'Initial value',

@@ -17,11 +17,6 @@ export default {
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
     properties: {
-        repeat: {
-            label: { en: 'Repeat items' },
-            type: 'OnOff',
-            defaultValue: false,
-        },
         slot: {
             hidden: true,
             defaultValue: [],
@@ -37,7 +32,6 @@ export default {
             },
             settings: true,
             bindable: true,
-            hidden: content => !content.repeat,
         },
         valueFormula: {
             type: 'Formula',
@@ -48,7 +42,6 @@ export default {
                     : { item: null, index: 0 },
             }),
             settings: true,
-            hidden: content => !content.repeat,
         },
         value: {
             type: 'Text',

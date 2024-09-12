@@ -1,5 +1,5 @@
 <template>
-    <wwSimpleLayout role="radiogroup">
+    <wwSimpleLayout class="ww-radiogroup" role="radiogroup">
         <Item
             v-for="(item, index) in content.items"
             :key="index"
@@ -70,3 +70,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.ww-radiogroup {
+    border: 3px solid red;
+    padding: 20px;
+}
+</style>

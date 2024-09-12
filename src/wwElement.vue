@@ -5,7 +5,7 @@
             :key="index"
             :item="item"
             :index="index"
-            :container="content.itemContainer"
+            :container="content.container"
             :valueFormula="content.valueFormula"
             :readonly="content.readonly"
             @update:selectedValue="onChange"

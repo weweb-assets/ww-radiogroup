@@ -51,6 +51,7 @@ export default {
             defaultValue: computed(() => props.content.value),
         });
         provide('_wwRadioSetSelectedValue', setSelectedValue);
+        provide('_wwRadioSelectedValue', selectedValue);
 
         return { selectedValue, setSelectedValue };
     },

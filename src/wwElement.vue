@@ -40,10 +40,6 @@ export default {
             '_wwRadioIsRequired',
             computed(() => props.content.required)
         );
-        provide(
-            '_wwRepeat',
-            computed(() => props.content.repeat)
-        );
         const { value: selectedValue, setValue: setSelectedValue } = wwLib.wwVariable.useComponentVariable({
             uid: props.wwElementState.uid,
             name: 'value',

@@ -8,7 +8,6 @@
 import { toRef, provide, reactive } from 'vue';
 export default {
     props: {
-        repeat: { type: Boolean, default: true },
         container: { type: Object, required: true },
         selectedValue: { type: undefined, required: true },
         index: { type: Number, required: true },
@@ -17,8 +16,6 @@ export default {
     },
     emits: ['update:selectedValue'],
     setup(props, context) {
-        provide('_wwRadioValue', props.selectedValue);
-
         function select() {
             if (props.readonly) return;
             context.emit('update:selectedValue', value.value);
@@ -31,6 +28,7 @@ export default {
         });
 
         provide('_wwRadioSelect', select);
+        provide('_wwRadioValue', props.selectedValue);
 
         return { select, data };
     },

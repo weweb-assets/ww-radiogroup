@@ -6,7 +6,7 @@
             :item="item"
             :index="index"
             :container="content.itemContainer"
-            :valueFormula="content.valueFormula"
+            :selectedValue="selectedValue"
             :readonly="content.readonly"
             @update:selectedValue="onChange"
         ></Item>

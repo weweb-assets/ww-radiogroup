@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { toRef, provide, computed, reactive } from 'vue';
+import { toRef, provide, reactive } from 'vue';
 export default {
     props: {
         repeat: { type: Boolean, default: true },
@@ -13,37 +13,26 @@ export default {
         selectedValue: { type: undefined, required: true },
         index: { type: Number, required: true },
         item: { required: true },
-        valueFormula: { type: String, required: true },
         readonly: { type: Boolean, required: true },
     },
     emits: ['update:selectedValue'],
     setup(props, context) {
-        const { resolveMappingFormula } = wwLib.wwFormula.useFormula();
-
-        const value = computed(() =>
-            resolveMappingFormula(props.valueFormula, { item: props.item, index: props.index })
-        );
-        const isSelected = computed(() => props.selectedValue === value.value);
-
-        provide('_wwRadioIsChecked', isSelected);
-        provide('_wwRadioValue', value);
+        provide('_wwRadioValue', selectedValue);
 
         function select() {
             if (props.readonly) return;
-            console.log('select', value.value);
             context.emit('update:selectedValue', value.value);
         }
 
         const data = reactive({
             item: toRef(props, 'item'),
-            value,
-            isSelected,
+            value: selectedValue,
             methods: { select },
         });
 
         provide('_wwRadioSelect', select);
 
-        return { select, data, isSelected };
+        return { select, data };
     },
 };
 </script>

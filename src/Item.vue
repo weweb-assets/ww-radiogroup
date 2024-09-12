@@ -1,6 +1,6 @@
 <template>
     <wwLayoutItemContext is-repeat :index="index" :data="data">
-        <wwElement v-bind="container" />
+        <wwElement v-bind="container" :selected-value="selectedValue" />
     </wwLayoutItemContext>
 </template>
 
@@ -28,7 +28,6 @@ export default {
         });
 
         provide('_wwRadioSelect', select);
-        provide('_wwRadioValue', props.selectedValue);
 
         return { select, data };
     },

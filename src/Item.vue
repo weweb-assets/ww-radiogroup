@@ -17,7 +17,7 @@ export default {
     },
     emits: ['update:selectedValue'],
     setup(props, context) {
-        provide('_wwRadioValue', selectedValue);
+        provide('_wwRadioValue', props.selectedValue);
 
         function select() {
             if (props.readonly) return;
@@ -26,7 +26,7 @@ export default {
 
         const data = reactive({
             item: toRef(props, 'item'),
-            value: selectedValue,
+            value: props.selectedValue,
             methods: { select },
         });
 

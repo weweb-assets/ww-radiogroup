@@ -1,6 +1,6 @@
 <template>
     <wwLayoutItemContext is-repeat :index="index" :data="data">
-        <wwElement v-bind="container" :selected-value="selectedValue" @update:itemValue="updatedItemValue" />
+        <wwElement v-bind="container" :is-selected="isSelected" @update:itemValue="updatedItemValue" />
     </wwLayoutItemContext>
 </template>
 
@@ -27,10 +27,12 @@ export default {
             itemValue.value = value;
         }
 
+        const isSelected = computed(() => props.selectedValue === itemValue.value);
+
         const data = reactive({
             item: toRef(props, 'item'),
             value: props.selectedValue,
-            isSelected: computed(() => props.selectedValue === itemValue.value),
+            isSelected,
             methods: { select },
         });
 

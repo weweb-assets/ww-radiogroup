@@ -9,7 +9,7 @@ export default {
     },
     options: {
         autoByContent: true,
-        layout: ['flex', 'grid'],
+        displayAllowedValues: ['flex', 'grid'],
     },
     states: ['readonly'],
     triggerEvents: [

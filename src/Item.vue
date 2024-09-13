@@ -20,7 +20,7 @@ export default {
 
         function select() {
             if (props.readonly) return;
-            context.emit('update:selectedValue', value.value);
+            context.emit('update:selectedValue', itemValue.value);
         }
 
         function updatedItemValue(value) {

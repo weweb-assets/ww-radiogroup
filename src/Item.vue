@@ -1,6 +1,6 @@
 <template>
     <wwLayoutItemContext is-repeat :index="index" :data="data">
-        <wwElement v-bind="container" :is-selected="isSelected" @update:itemValue="updatedItemValue" />
+        <wwElement v-bind="container" @update:itemValue="updatedItemValue" />
     </wwLayoutItemContext>
 </template>
 
@@ -36,6 +36,7 @@ export default {
             methods: { select },
         });
 
+        provide('_wwRadioIsChecked', isSelected);
         provide('_wwRadioSelect', select);
 
         return { select, data, updatedItemValue };

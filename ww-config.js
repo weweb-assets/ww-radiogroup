@@ -17,15 +17,33 @@ export default {
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
     properties: {
-        slot: {
-            hidden: true,
-            defaultValue: [],
-        },
         items: {
-            label: 'Items',
+            bindable: 'repeatable',
+            label: {
+                en: 'Items',
+                fr: 'Items',
+            },
             type: 'Info',
-            settings: true,
-            bindable: true,
+            options: {
+                text: {
+                    en: 'Elements to repeat',
+                },
+            },
+            defaultValue: [],
+            /* wwEditor:start */
+            bindingValidation: {
+                validations: [
+                    {
+                        type: 'array',
+                    },
+                    {
+                        type: 'object',
+                    },
+                ],
+                tooltip:
+                    'A collection or an array of data: \n\n`myCollection` or `[{}, {}, ...] || ["string1", "string2", ...] || [1, 2, ...]`',
+            },
+            /* wwEditor:end */
         },
         value: {
             type: 'Text',

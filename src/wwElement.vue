@@ -1,5 +1,5 @@
 <template>
-    <wwLayout role="radiogroup" path="slot">
+    <wwLayout role="radiogroup" path="items">
         <template #default="{ item, index }">
             <wwLayoutItem>
                 <Item

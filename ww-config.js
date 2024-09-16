@@ -20,16 +20,10 @@ export default {
         slot: {
             hidden: true,
             defaultValue: [],
-            navigator: {
-                hidden: content => content.repeat,
-            },
         },
         items: {
             label: 'Items',
-            type: 'ObjectList',
-            options: {
-                useSchema: true,
-            },
+            type: 'Info',
             settings: true,
             bindable: true,
         },
@@ -71,9 +65,9 @@ export default {
             },
             /* wwEditor:end */
         },
-        itemContainer: {
-            hidden: true,
-            defaultValue: { isWwObject: true, type: 'e081a0e1-0a3f-493a-916d-357bdef10b82', name: 'Radiogroup item' },
-        },
+        // itemContainer: {
+        //     hidden: true,
+        //     defaultValue: { isWwObject: true, type: 'e081a0e1-0a3f-493a-916d-357bdef10b82', name: 'Radiogroup item' },
+        // },
     },
 };

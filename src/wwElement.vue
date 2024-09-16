@@ -1,17 +1,4 @@
 <template>
-    <!-- <wwSimpleLayout role="radiogroup">
-        <Item
-            v-for="(item, index) in content.items"
-            :key="index"
-            :item="item"
-            :index="index"
-            :container="content.itemContainer"
-            :selected-value="selectedValue"
-            :readonly="content.readonly"
-            @update:selectedValue="onChange"
-        ></Item>
-    </wwSimpleLayout> -->
-
     <wwLayout role="radiogroup" path="slot">
         <template #default="{ item, index }">
             <wwLayoutItem>

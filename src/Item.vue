@@ -30,8 +30,7 @@ export default {
         const isSelected = computed(() => props.selectedValue === itemValue.value);
 
         const data = reactive({
-            item: toRef(props, 'item'),
-            value: props.selectedValue,
+            radiogroupValue: props.selectedValue,
             isSelected,
             methods: { select },
         });

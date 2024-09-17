@@ -1,6 +1,6 @@
 export default {
     editor: {
-        label: 'Radio group',
+        label: 'Radio Group',
         icon: 'radio',
         bubble: true,
     },
@@ -53,14 +53,13 @@ export default {
         },
         name: {
             type: 'Text',
-            label: 'Name',
+            label: 'Radio name',
             settings: true,
             bindable: true,
         },
         readonly: {
             label: { en: 'Read only', fr: 'Lecture seule' },
             type: 'OnOff',
-            section: 'settings',
             bindable: true,
             defaultValue: false,
             /* wwEditor:start */
@@ -73,7 +72,6 @@ export default {
         required: {
             label: { en: 'Required' },
             type: 'OnOff',
-            section: 'settings',
             bindable: true,
             defaultValue: false,
             /* wwEditor:start */
@@ -83,9 +81,5 @@ export default {
             },
             /* wwEditor:end */
         },
-        // itemContainer: {
-        //     hidden: true,
-        //     defaultValue: { isWwObject: true, type: 'e081a0e1-0a3f-493a-916d-357bdef10b82', name: 'Radiogroup item' },
-        // },
     },
 };

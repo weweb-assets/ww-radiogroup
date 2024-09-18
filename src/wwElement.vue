@@ -1,25 +1,20 @@
 <template>
     <wwLayout role="radiogroup" path="items">
-        <template #default="{ item, index }">
+        <!-- <template #default="{ item }">
             <wwLayoutItem>
-                <Item
-                    :index="index"
-                    :container="item"
-                    :selected-value="selectedValue"
-                    :readonly="content.readonly"
-                    @update:selectedValue="onChange"
-                />
+                <Item :index="index" :container="item" :readonly="content.readonly" @update:selectedValue="onChange" />
+                <wwElement v-bind="item" />
             </wwLayoutItem>
-        </template>
+        </template> -->
     </wwLayout>
 </template>
 
 <script>
-import Item from './Item.vue';
+// import Item from './Item.vue';
 import { provide, computed } from 'vue';
 
 export default {
-    components: { Item },
+    // components: { Item },
     props: {
         content: { type: Object, required: true },
         /* wwEditor:start */
@@ -48,6 +43,7 @@ export default {
             defaultValue: computed(() => props.content.value),
         });
         provide('_wwRadioSetSelectedValue', setSelectedValue);
+        provide('_wwRadioSelectedValue', selectedValue);
 
         return { selectedValue, setSelectedValue };
     },

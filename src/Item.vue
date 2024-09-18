@@ -5,11 +5,10 @@
 </template>
 
 <script>
-import { ref, provide, reactive, computed } from 'vue';
+import { ref, provide, inject, reactive, computed } from 'vue';
 export default {
     props: {
         container: { type: Object, required: true },
-        selectedValue: { type: undefined, required: true },
         index: { type: Number, required: true },
         item: { required: true },
         readonly: { type: Boolean, required: true },
@@ -17,6 +16,7 @@ export default {
     emits: ['update:selectedValue'],
     setup(props, context) {
         const itemValue = ref(undefined);
+        const selectedValue = inject('_wwRadioSelectedValue');
 
         function select() {
             if (props.readonly) return;
@@ -27,10 +27,10 @@ export default {
             itemValue.value = value;
         }
 
-        const isSelected = computed(() => props.selectedValue === itemValue.value);
+        const isSelected = computed(() => selectedValue.value === itemValue.value);
 
         const data = reactive({
-            radiogroupValue: props.selectedValue,
+            radiogroupValue: selectedValue.value,
             isSelected,
             methods: { select },
         });

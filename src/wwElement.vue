@@ -1,5 +1,5 @@
 <template>
-    <wwLayout role="radiogroup" path="items"> </wwLayout>
+    <wwLayout role="radiogroup" path="items" />
 </template>
 
 <script>

@@ -1,20 +1,11 @@
 <template>
-    <wwLayout role="radiogroup" path="items">
-        <!-- <template #default="{ item }">
-            <wwLayoutItem>
-                <Item :index="index" :container="item" :readonly="content.readonly" @update:selectedValue="onChange" />
-                <wwElement v-bind="item" />
-            </wwLayoutItem>
-        </template> -->
-    </wwLayout>
+    <wwLayout role="radiogroup" path="items"> </wwLayout>
 </template>
 
 <script>
-// import Item from './Item.vue';
 import { provide, computed } from 'vue';
 
 export default {
-    // components: { Item },
     props: {
         content: { type: Object, required: true },
         /* wwEditor:start */

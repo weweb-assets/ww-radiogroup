@@ -3,6 +3,16 @@ export default {
         label: 'Radio Group',
         icon: 'radio',
         bubble: true,
+        hint: (_, sidepanelContent) => {
+            if (sidepanelContent.isDuplicateItemValues) {
+                return {
+                    type: 'warning',
+                    header: 'Duplicate Values',
+                    text: 'Radio Items values must be unique.',
+                };
+            }
+            return null;
+        },
     },
     inherit: {
         type: 'ww-layout',
@@ -80,6 +90,11 @@ export default {
                 tooltip: 'A boolean that defines if the input is in readonly: `true | false`',
             },
             /* wwEditor:end */
+        },
+        isDuplicateItemValues: {
+            hidden: true,
+            editorOnly: true,
+            defaultValue: false,
         },
     },
 };

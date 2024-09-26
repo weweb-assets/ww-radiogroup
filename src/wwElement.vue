@@ -3,7 +3,10 @@
 </template>
 
 <script>
-import { reactive, provide, computed, watch } from 'vue';
+import { provide, computed } from 'vue';
+/* wwEditor:start */
+import useRadiogroupEditorHint from './useRadiogroupEditorHint';
+/* wwEditor:end */
 
 export default {
     props: {
@@ -16,29 +19,8 @@ export default {
     emits: ['add-state', 'remove-state', 'update:sidepanel-content'],
     setup(props, { emit }) {
         /* wwEditor:start */
-        const radioItems = reactive({});
-        function registerRadioItem(id, value) {
-            radioItems[id] = value;
-        }
-        function unregisterRadioItem(id) {
-            delete radioItems[id];
-        }
-
-        watch(
-            radioItems,
-            value => {
-                const isDuplicateItemValues = new Set(Object.values(radioItems)).size !== value.length;
-                emit('update:sidepanel-content', {
-                    path: 'isDuplicateItemValues',
-                    value: isDuplicateItemValues,
-                });
-            },
-            { deep: true, immediate: true }
-        );
-
-        provide('_wwRadioRegisterItem', registerRadioItem);
-        provide('_wwRadioUnregisterItem', unregisterRadioItem);
-        provide('_wwRadioItems', radioItems);
+        const radiogroup = useRadiogroupEditorHint(emit);
+        provide('wwUseRadiogroupEditorHint', radiogroup);
         /* wwEditor:end */
 
         provide(
@@ -62,7 +44,7 @@ export default {
         provide('_wwRadioSetSelectedValue', setSelectedValue);
         provide('_wwRadioSelectedValue', selectedValue);
 
-        return { selectedValue, setSelectedValue, radioItems };
+        return { selectedValue, setSelectedValue };
     },
     watch: {
         'content.value'(newValue) {

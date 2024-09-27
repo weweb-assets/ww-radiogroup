@@ -4,7 +4,7 @@ export default {
         icon: 'radio',
         bubble: true,
         hint: (_, sidepanelContent) => {
-            if (sidepanelContent.isDuplicateItemValues) {
+            if (sidepanelContent.hasDuplicateValues) {
                 return {
                     type: 'warning',
                     header: 'Duplicate Values',
@@ -91,7 +91,7 @@ export default {
             },
             /* wwEditor:end */
         },
-        isDuplicateItemValues: {
+        hasDuplicateValues: {
             hidden: true,
             editorOnly: true,
             defaultValue: false,

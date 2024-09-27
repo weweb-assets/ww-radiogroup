@@ -5,7 +5,7 @@
 <script>
 import { provide, computed } from 'vue';
 /* wwEditor:start */
-import useRadiogroupEditorHint from './useRadiogroupEditorHint';
+import useRadiogroupHint from './editor/useRadiogroupHint';
 /* wwEditor:end */
 
 export default {
@@ -19,8 +19,7 @@ export default {
     emits: ['add-state', 'remove-state', 'update:sidepanel-content'],
     setup(props, { emit }) {
         /* wwEditor:start */
-        const radiogroup = useRadiogroupEditorHint(emit);
-        provide('wwUseRadiogroupEditorHint', radiogroup);
+        useRadiogroupHint(emit);
         /* wwEditor:end */
 
         provide(

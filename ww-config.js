@@ -19,7 +19,7 @@ export default {
     },
     options: {
         autoByContent: true,
-        displayAllowedValues: ['flex', 'grid'],
+        displayAllowedValues: ['flex', 'grid', 'inline-flex', 'inline-grid'],
     },
     states: ['readonly'],
     triggerEvents: [

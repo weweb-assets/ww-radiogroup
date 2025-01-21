@@ -1,12 +1,25 @@
 <template>
-    <wwLayout role="radiogroup" path="items" />
+    <wwLayout path="items" disable-edit role="radiogroup">
+        <template #default="{ index, data }">
+            <Item
+                :data="data"
+                :index="index"
+                :element="content.itemElement"
+                :selectedValue="selectedValue"
+                :isSelectOnClick="content.isSelectOnClick"
+                :isReadonly="content.readonly"
+                :valueFormula="content.valueFormula"
+                :readonlyFormula="content.readonlyFormula"
+                :isEditing="isEditing"
+                @update:selectedValue="setSelectedValue"
+            />
+        </template>
+    </wwLayout>
 </template>
 
 <script>
 import { provide, computed } from 'vue';
-/* wwEditor:start */
-import useRadiogroupHint from './editor/useRadiogroupHint';
-/* wwEditor:end */
+import Item from './Item.vue';
 
 export default {
     props: {
@@ -16,12 +29,11 @@ export default {
         /* wwEditor:end */
         wwElementState: { type: Object, required: true },
     },
+    components: {
+        Item,
+    },
     emits: ['add-state', 'remove-state', 'update:sidepanel-content'],
     setup(props, { emit }) {
-        /* wwEditor:start */
-        useRadiogroupHint(emit);
-        /* wwEditor:end */
-
         provide(
             '_wwRadioName',
             computed(() => props.content.name || props.wwElementState.name || `radio-${props.wwElementState.uid}'}`)
@@ -43,7 +55,15 @@ export default {
         provide('_wwRadioSetSelectedValue', setSelectedValue);
         provide('_wwRadioSelectedValue', selectedValue);
 
-        return { selectedValue, setSelectedValue };
+        const isEditing = computed(() => {
+            /* wwEditor:start */
+            return props.wwEditorState.isEditing;
+            /* wwEditor:end */
+            // eslint-disable-next-line no-unreachable
+            return false;
+        });
+
+        return { selectedValue, setSelectedValue, isEditing };
     },
     watch: {
         'content.value'(newValue) {

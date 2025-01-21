@@ -26,34 +26,17 @@ export default {
         { name: 'change', label: { en: 'On change' }, event: { value: '' }, default: true },
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
+    customSettingsPropertiesOrder: [
+        ['value', 'name'],
+        ['items', 'valueFormula', 'readonlyFormula'],
+        'readonly',
+        'required',
+        'isSelectOnClick',
+    ],
     properties: {
-        items: {
-            bindable: 'repeatable',
-            label: {
-                en: 'Items',
-                fr: 'Items',
-            },
-            type: 'Info',
-            options: {
-                text: {
-                    en: 'Elements to repeat',
-                },
-            },
-            defaultValue: [],
-            /* wwEditor:start */
-            bindingValidation: {
-                validations: [
-                    {
-                        type: 'array',
-                    },
-                    {
-                        type: 'object',
-                    },
-                ],
-                tooltip:
-                    'A collection or an array of data: \n\n`myCollection` or `[{}, {}, ...] || ["string1", "string2", ...] || [1, 2, ...]`',
-            },
-            /* wwEditor:end */
+        itemElement: {
+            hidden: true,
+            defaultValue: { isWwObject: true, type: 'ww-flexbox' },
         },
         value: {
             type: 'Text',
@@ -67,11 +50,57 @@ export default {
             settings: true,
             bindable: true,
         },
+        items: {
+            label: {
+                en: 'Items',
+            },
+            type: 'ObjectList',
+            options: {
+                useSchema: true,
+            },
+            bindable: true,
+            defaultValue: [],
+            settings: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                validations: [
+                    {
+                        type: 'array',
+                    },
+                    {
+                        type: 'object',
+                    },
+                ],
+                tooltip: 'A collection or an array of data: \n\n`myCollection` or `[{}, {}, ...]`',
+            },
+            /* wwEditor:end */
+        },
+        valueFormula: {
+            type: 'Formula',
+            label: 'Value (per item)',
+            options: content => ({
+                template: Array.isArray(content.items)
+                    ? { item: content.items[0], index: 0 }
+                    : { item: null, index: 0 },
+            }),
+            settings: true,
+        },
+        readonlyFormula: {
+            type: 'Formula',
+            label: 'Read only (per item)',
+            options: content => ({
+                template: Array.isArray(content.items)
+                    ? { item: content.items[0], index: 0 }
+                    : { item: null, index: 0 },
+            }),
+            settings: true,
+        },
         readonly: {
             label: { en: 'Read only', fr: 'Lecture seule' },
             type: 'OnOff',
             bindable: true,
             defaultValue: false,
+            settings: true,
             /* wwEditor:start */
             bindingValidation: {
                 type: 'boolean',
@@ -84,6 +113,7 @@ export default {
             type: 'OnOff',
             bindable: true,
             defaultValue: false,
+            settings: true,
             /* wwEditor:start */
             bindingValidation: {
                 type: 'boolean',
@@ -91,10 +121,18 @@ export default {
             },
             /* wwEditor:end */
         },
-        hasDuplicateValues: {
-            hidden: true,
-            editorOnly: true,
-            defaultValue: false,
+        isSelectOnClick: {
+            label: { en: 'Select on click' },
+            type: 'OnOff',
+            bindable: true,
+            defaultValue: true,
+            settings: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the input is automatically selected on click: `true | false`',
+            },
+            /* wwEditor:end */
         },
     },
 };

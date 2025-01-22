@@ -1,20 +1,22 @@
 <template>
-    <wwLayout path="items" disable-edit role="radiogroup">
-        <template #default="{ index, data }">
-            <Item
-                :data="data"
-                :index="index"
-                :element="content.itemElement"
-                :selectedValue="selectedValue"
-                :isSelectOnClick="content.isSelectOnClick"
-                :isReadonly="content.readonly"
-                :valueFormula="content.valueFormula"
-                :readonlyFormula="content.readonlyFormula"
-                :isEditing="isEditing"
-                @update:selectedValue="setSelectedValue"
-            />
+    <wwSimpleLayout role="radiogroup">
+        <template v-for="(data, index) in content.items" :key="index">
+            <wwLayoutItemContext is-repeat :index="index" :data="data">
+                <Item
+                    :data="data"
+                    :index="index"
+                    :element="content.itemElement"
+                    :selectedValue="selectedValue"
+                    :isSelectOnClick="content.isSelectOnClick"
+                    :isReadonly="content.readonly"
+                    :valueFormula="content.valueFormula"
+                    :readonlyFormula="content.readonlyFormula"
+                    :isEditing="isEditing"
+                    @update:selectedValue="setSelectedValue"
+                />
+            </wwLayoutItemContext>
         </template>
-    </wwLayout>
+    </wwSimpleLayout>
 </template>
 
 <script>

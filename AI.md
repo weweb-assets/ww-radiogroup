@@ -19,7 +19,7 @@ Properties:
 - isSelectOnClick: boolean (default: true) - Whether items are selected on click
 
 Children:
-- itemElement: ww-flexbox - Template for individual radio items
+- itemElement: ww-div - Template for individual radio items
 
 Context:
 - context.mapping: Object - Mapping of the radio group used for value and readonly formulas

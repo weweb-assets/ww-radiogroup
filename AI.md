@@ -19,7 +19,7 @@ A container component that manages a group of radio buttons, allowing users to s
 - value: string - Currently selected value
 - name: string - Unique name for the radio group
 - items: Array<Object> - Collection of items to display as radio options
-- valueFormula: Formula - Expression to extract value from each item
+- valueFormula: Formula - ***REQUIRED*** Expression to extract value from each item
 - readonlyFormula: Formula - Expression to determine readonly state per item
 - readonly: boolean - Makes entire group read-only (default: false)
 - required: boolean - Whether selection is required (default: false)

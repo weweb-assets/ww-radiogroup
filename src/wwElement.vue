@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { provide, computed } from 'vue';
+import { provide, computed, inject } from 'vue';
 import Item from './Item.vue';
 
 export default {
@@ -64,6 +64,27 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         });
+
+        // Form integration
+        const useForm = inject('_wwForm:useForm', () => ({}));
+
+        // Form field configuration
+        const fieldName = computed(() => props.content?.fieldName);
+        const validation = computed(() => props.content?.validation);
+        const customValidation = computed(() => props.content?.customValidation);
+        const required = computed(() => props.content?.required);
+
+        // Use form integration
+        useForm(
+            selectedValue,
+            { fieldName, validation, customValidation, required },
+            {
+                elementState: props.wwElementState,
+                emit,
+                sidepanelFormPath: 'form',
+                setValue: setSelectedValue,
+            }
+        );
 
         return { selectedValue, setSelectedValue, isEditing };
     },

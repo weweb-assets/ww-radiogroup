@@ -109,6 +109,7 @@ export default {
         },
         itemElement: {
             hidden: true,
+            isArray: false,
             defaultValue: { isWwObject: true, type: 'ww-flexbox' },
         },
         value: {

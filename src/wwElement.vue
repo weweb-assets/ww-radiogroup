@@ -77,13 +77,8 @@ export default {
         // Use form integration
         useForm(
             selectedValue,
-            { fieldName, validation, customValidation, required },
-            {
-                elementState: props.wwElementState,
-                emit,
-                sidepanelFormPath: 'form',
-                setValue: setSelectedValue,
-            }
+            { fieldName, validation, customValidation, required, initialValue: computed(() => props.content.value) },
+            { elementState: props.wwElementState, emit, sidepanelFormPath: 'form', setValue: setSelectedValue }
         );
 
         return { selectedValue, setSelectedValue, isEditing };

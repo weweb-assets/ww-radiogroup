@@ -12,7 +12,7 @@
                     :valueFormula="content.valueFormula"
                     :readonlyFormula="content.readonlyFormula"
                     :isEditing="isEditing"
-                    @update:selectedValue="setSelectedValue"
+                    @update:selectedValue="onChange"
                 />
             </wwLayoutItemContext>
         </template>

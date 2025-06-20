@@ -1,6 +1,6 @@
 ---
 name: ww-radiogroup
-description: Radio group component for single option selection from multiple choices
+description: Radio group component for single option selection from multiple choices. Requires ww-input-radio component.
 keywords: [radio, form, input, selection, group, choice, option]
 ---
 

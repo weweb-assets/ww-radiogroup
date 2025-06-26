@@ -22,27 +22,12 @@ export function useRadioProvider(props, emit, setValue) {
   }
 
   function setSelectedValue(value) {
-    console.log('[RadioGroup] setSelectedValue called with:', value);
-    console.log('[RadioGroup] Current selectedValue:', selectedValue.value);
-    console.log('[RadioGroup] Are they equal?', selectedValue.value === value);
-    
-    if (selectedValue.value === value) {
-      console.log('[RadioGroup] Value unchanged, returning early');
-      return;
-    }
-    
-    console.log('[RadioGroup] Setting new value:', value);
+    if (selectedValue.value === value) return;
     selectedValue.value = value;
-    
     // Use WeWeb's setValue to update the component variable
     if (setValue) {
-      console.log('[RadioGroup] Calling setValue');
       setValue(value);
-    } else {
-      console.log('[RadioGroup] setValue not available!');
     }
-    
-    console.log('[RadioGroup] Emitting change event');
     emit('trigger-event', { name: 'change', event: { value } });
   }
 

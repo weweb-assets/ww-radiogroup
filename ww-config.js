@@ -25,8 +25,32 @@ export default {
     ],
     properties: {
         children: {
-            hidden: true,
+            label: {
+                en: 'Items',
+                fr: 'Items',
+            },
+            type: 'Repeat',
+            options: {
+                text: { en: 'Radio elements to repeat' },
+            },
+            hidden: (content, sidePanelContent, boundProps, wwProps) =>
+                !!(wwProps && wwProps.isFixed) || wwProps.noDropzone,
+            bindable: 'repeatable',
             defaultValue: [],
+            /* wwEditor:start */
+            bindingValidation: {
+                validations: [
+                    {
+                        type: 'array',
+                    },
+                    {
+                        type: 'object',
+                    },
+                ],
+                tooltip:
+                    'A collection or an array of data: \n\n`myCollection` or `[{}, {}, ...] || ["string1", "string2", ...] || [1, 2, ...]`',
+            },
+            /* wwEditor:end */
         },
         radiogroupState: {
             editorOnly: true,

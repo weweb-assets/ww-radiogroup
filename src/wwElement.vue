@@ -1,5 +1,5 @@
 <template>
-    <div role="radiogroup" :aria-required="content.required" :aria-readonly="content.readonly">
+    <div role="radiogroup" :aria-required="content.required" :aria-readonly="content.readonly" class="ww-radiogroup">
         <wwLayout path="children" />
     </div>
 </template>
@@ -26,31 +26,32 @@ export default {
             defaultValue: computed(() => props.content.value),
         });
 
-        const {
-            registeredRadios,
-            selectedValue,
-            radioValues,
-            hasDuplicateValues,
-            duplicateValues,
-        } = useRadioProvider(props, emit, setValue);
+        const { registeredRadios, selectedValue, radioValues, hasDuplicateValues, duplicateValues } = useRadioProvider(
+            props,
+            emit,
+            setValue
+        );
 
         // Sync internal selectedValue with component variable
-        watch(modelValue, (newValue) => {
+        watch(modelValue, newValue => {
             selectedValue.value = newValue;
         });
 
         // Watch for external value changes
-        watch(() => props.content.value, (newValue) => {
-            if (newValue !== modelValue.value) {
-                setValue(newValue);
-                emit('trigger-event', { name: 'initValueChange', event: { value: newValue } });
+        watch(
+            () => props.content.value,
+            newValue => {
+                if (newValue !== modelValue.value) {
+                    setValue(newValue);
+                    emit('trigger-event', { name: 'initValueChange', event: { value: newValue } });
+                }
             }
-        });
+        );
 
         // Form integration
         const form = inject('_wwForm:info', null);
         const useForm = inject('_wwForm:useForm', () => {});
-        
+
         const fieldName = computed(() => props.content.fieldName);
         const validation = computed(() => props.content.validation);
         const customValidation = computed(() => props.content.customValidation);
@@ -58,24 +59,24 @@ export default {
 
         useForm(
             modelValue,
-            { 
-                fieldName, 
-                validation, 
-                customValidation, 
-                required, 
-                initialValue: computed(() => props.content.value) 
+            {
+                fieldName,
+                validation,
+                customValidation,
+                required,
+                initialValue: computed(() => props.content.value),
             },
-            { 
-                elementState: props.wwElementState, 
-                emit, 
-                setValue 
+            {
+                elementState: props.wwElementState,
+                emit,
+                setValue,
             }
         );
 
         // Update readonly state
         watch(
             () => props.content.readonly,
-            (isReadonly) => {
+            isReadonly => {
                 if (isReadonly) {
                     emit('add-state', 'readonly');
                 } else {
@@ -94,7 +95,7 @@ export default {
                 for (const [uid, valueRef] of registeredRadios.value.entries()) {
                     registeredRadiosList.push({
                         uid,
-                        value: unref(valueRef)
+                        value: unref(valueRef),
                     });
                 }
 
@@ -104,10 +105,12 @@ export default {
                         registeredRadios: registeredRadiosList,
                         hasDuplicateValues: hasDuplicateValues.value,
                         duplicateValues: duplicateValues.value,
-                        form: form ? {
-                            uid: form.uid,
-                            name: form.name?.value,
-                        } : null,
+                        form: form
+                            ? {
+                                  uid: form.uid,
+                                  name: form.name?.value,
+                              }
+                            : null,
                     },
                 });
             },
@@ -122,3 +125,13 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.ww-radiogroup {
+    display: flex;
+}
+
+.ww-radiogroup > :deep(div) {
+    flex-grow: 1;
+}
+</style>

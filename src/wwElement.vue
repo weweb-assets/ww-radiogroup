@@ -118,6 +118,54 @@ export default {
         );
         /* wwEditor:end */
 
+        // Create local context data
+        const localData = computed(() => ({
+            selectedValue: modelValue.value,
+            values: radioValues.value,
+            hasSelection: modelValue.value !== null && modelValue.value !== undefined && modelValue.value !== '',
+            radioCount: registeredRadios.value.size,
+            hasDuplicates: hasDuplicateValues.value,
+        }));
+        
+        // Define local context methods
+        const localMethods = {
+            setValue: (value) => setValue(value),
+            getSelectedValue: () => modelValue.value,
+            getValues: () => radioValues.value,
+            hasValue: (value) => radioValues.value.includes(value),
+        };
+        
+        // Markdown documentation
+        const markdown = `
+## Radio Group Local Context
+
+This radio group exposes the following data and methods through local context:
+
+### Data:
+- **selectedValue**: The currently selected radio value
+- **values**: Array of all registered radio values
+- **hasSelection**: Boolean indicating if a radio is selected
+- **radioCount**: Number of registered radio inputs
+- **hasDuplicates**: Boolean indicating if there are duplicate values
+
+### Methods:
+- **setValue(value)**: Set the selected radio value
+- **getSelectedValue()**: Get the currently selected value
+- **getValues()**: Get array of all radio values
+- **hasValue(value)**: Check if a value exists in the radio group
+
+### Usage:
+Access this context in child elements using the key 'ww-radiogroup'
+        `;
+        
+        // Register local context
+        wwLib.wwElement.useRegisterElementLocalContext(
+            'ww-radiogroup',
+            localData,
+            localMethods,
+            markdown
+        );
+
         return {
             modelValue,
             setValue,

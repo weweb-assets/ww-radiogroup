@@ -59,3 +59,12 @@ ww-radiogroup
 - The radiogroup handles form registration (not individual radios)
 - Supports any wrapper components between the group and radios
 - Works seamlessly with ww-label for enhanced UX
+
+<elements>
+{"uid":0,"tag":"ww-radiogroup","name":"Radio Options","settings":{"dynamicConfiguration":{"content":{"children":[{"key":"label","type":"Text"},{"key":"value","type":"Text"}]}}},"props":{"default":{"name":"preference","value":"basic","readonly":false,"required":true,"fieldName":"preference","validation":"","customValidation":false}},"styles":{"default":{"width":"100%","display":"flex","rowGap":"16px","columnGap":"16px","flexDirection":"column"}},"slots":{"children":[{"uid":1}]},"repeatSlots":[{"slot":"children","value":{"js":"return [object Object],[object Object],[object Object]"}}]}
+{"uid":1,"tag":"ww-label","name":"Option 1 Container","states":[{"id":"_wwHover","label":"hover"}],"props":{"default":{"customHtmlFor":""}},"styles":{"default":{"width":"100%","border":"2px solid #e5e7eb","cursor":"pointer","display":"flex","padding":"20px","transition":"all 0.2s ease","borderRadius":"12px","backgroundColor":{"defaultValue":"#ffffff","js":"return context.local.data?.['radiogroup']?.['selectedValue']==context.item.data?.['value']  ? '#E0FFFF' : '#FFFFFF'"},"rowGap":"16px","columnGap":"16px","alignItems":"center","flexDirection":"row","flexGrow":"1"},"_wwHover_default":{"display":"flex","boxShadow":"0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06)","borderColor":"#4f46e5"}},"slots":{"children":[{"uid":2}]}}
+{"uid":2,"tag":"ww-div","name":"Option 1 Content","states":[{"id":"_wwHover","label":"hover"}],"styles":{"default":{"flex":"1 1 0","display":"flex","customCss":{},"flexDirection":"column"},"_wwHover_default":{"display":"flex"}},"slots":{"children":[{"uid":3},{"uid":4}]}}
+{"uid":3,"tag":"ww-input-radio","props":{"default":{"value":{"defaultValue":"basic","js":"return context.item.data?.['value']"},"readonly":false,"appearance":"simple"}},"styles":{"default":{"display":"none"}}}
+{"uid":4,"tag":"ww-text","name":"Option 1 Title","states":[{"id":"_wwHover","label":"hover"}],"props":{"default":{"tag":"h3","text":{"en":{"defaultValue":"Basic Plan","js":"return context.item.data?.['label']+ ' plan'"}}}},"styles":{"default":{"margin":"0 0 4px 0","color":"#111827","fontSize":"18px","fontWeight":"600"}}}
+</elements>
+

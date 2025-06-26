@@ -86,37 +86,6 @@ export default {
             { immediate: true }
         );
 
-        /* wwEditor:start */
-        // Update sidepanel content with radio group state
-        watch(
-            [registeredRadios, hasDuplicateValues, duplicateValues],
-            () => {
-                const registeredRadiosList = [];
-                for (const [uid, valueRef] of registeredRadios.value.entries()) {
-                    registeredRadiosList.push({
-                        uid,
-                        value: unref(valueRef),
-                    });
-                }
-
-                emit('update:sidepanel-content', {
-                    path: 'radiogroupState',
-                    value: {
-                        registeredRadios: registeredRadiosList,
-                        hasDuplicateValues: hasDuplicateValues.value,
-                        duplicateValues: duplicateValues.value,
-                        form: form
-                            ? {
-                                  uid: form.uid,
-                                  name: form.name?.value,
-                              }
-                            : null,
-                    },
-                });
-            },
-            { immediate: true, deep: true }
-        );
-        /* wwEditor:end */
 
         // Create local context data
         const localData = computed(() => ({

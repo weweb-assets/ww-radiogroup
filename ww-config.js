@@ -3,16 +3,6 @@ export default {
         label: 'Radio Group',
         icon: 'radio',
         bubble: true,
-        hint: (_, sidepanelContent) => {
-            if (sidepanelContent.hasDuplicateValues) {
-                return {
-                    type: 'warning',
-                    header: 'Duplicate Values',
-                    text: 'Radio Items values must be unique.',
-                };
-            }
-            return null;
-        },
     },
     inherit: {
         type: 'ww-layout',
@@ -27,50 +17,114 @@ export default {
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
     customSettingsPropertiesOrder: [
-        'formInfobox',
-        ['fieldName', 'customValidation', 'validation'],
+        'radiogroupInfobox',
         ['value', 'name'],
-        ['items', 'valueFormula', 'readonlyFormula'],
+        ['fieldName', 'customValidation', 'validation'],
         'readonly',
         'required',
-        'isSelectOnClick',
     ],
     properties: {
-        /* wwEditor:start */
-        form: {
+        children: {
+            hidden: true,
+            defaultValue: [],
+        },
+        radiogroupState: {
             editorOnly: true,
             hidden: true,
-            defaultValue: false,
-        },
-        formInfobox: {
-            type: 'InfoBox',
-            section: 'settings',
-            options: (_, sidePanelContent) => ({
-                variant: sidePanelContent.form?.name ? 'success' : 'warning',
-                icon: 'pencil',
-                title: sidePanelContent.form?.name || 'Unnamed form',
-                content: !sidePanelContent.form?.name && 'Give your form a meaningful name.',
-            }),
-            hidden: (_, sidePanelContent) => {
-                return !sidePanelContent.form;
+            defaultValue: {
+                registeredRadios: [],
+                hasDuplicateValues: false,
+                duplicateValues: [],
             },
         },
-        /* wwEditor:end */
+        radiogroupInfobox: {
+            type: "InfoBox",
+            section: "settings",
+            options: (_, sidePanelContent) => {
+                const state = sidePanelContent.radiogroupState || {};
+                const radioCount = state.registeredRadios?.length || 0;
+                const hasDuplicates = state.hasDuplicateValues;
+                const duplicates = state.duplicateValues || [];
+                const inForm = !!state.form?.uid;
+                const formName = state.form?.name;
+                
+                let variant = "info";
+                let title = `${radioCount} radio${radioCount !== 1 ? 's' : ''} registered`;
+                let content = "";
+                
+                if (radioCount === 0) {
+                    variant = "warning";
+                    title = "No radios registered";
+                    content = "Add radio inputs inside this group to create options.";
+                } else if (hasDuplicates) {
+                    variant = "error";
+                    content = `⚠️ Duplicate values detected: ${duplicates.join(', ')}. Each radio must have a unique value.`;
+                } else if (radioCount === 1) {
+                    variant = "warning";
+                    content = "Only one radio registered. Add more options for a functional radio group.";
+                } else if (inForm && formName) {
+                    // All good - in form with multiple radios
+                    variant = "success";
+                    title = formName;
+                }
+                
+                return {
+                    variant,
+                    icon: "radio",
+                    title,
+                    content,
+                };
+            },
+        },
+        value: {
+            type: 'Text',
+            label: 'Initial value',
+            section: 'settings',
+            bindable: true,
+            defaultValue: '',
+        },
+        name: {
+            type: 'Text',
+            label: 'Radio group name',
+            section: 'settings',
+            bindable: true,
+            defaultValue: '',
+            propertyHelp: {
+                tooltip: 'HTML name attribute for the radio group. If empty, a unique name will be generated.',
+            },
+        },
+        readonly: {
+            label: { en: 'Read only', fr: 'Lecture seule' },
+            type: 'OnOff',
+            section: 'settings',
+            bindable: true,
+            defaultValue: false,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if all radios are readonly: `true | false`',
+            },
+            /* wwEditor:end */
+        },
+        required: {
+            label: { en: 'Required' },
+            type: 'OnOff',
+            section: 'settings',
+            bindable: true,
+            defaultValue: false,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if selecting a value is required: `true | false`',
+            },
+            /* wwEditor:end */
+        },
         fieldName: {
             label: 'Field name',
             section: 'settings',
             type: 'Text',
             defaultValue: '',
             bindable: true,
-            hidden: (_, sidePanelContent) => {
-                return !sidePanelContent.form?.uid;
-            },
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'string',
-                tooltip: 'A string that defines the field name: `"otp_code"`',
-            },
-            /* wwEditor:end */
         },
         customValidation: {
             label: 'Custom validation',
@@ -78,132 +132,14 @@ export default {
             type: 'OnOff',
             defaultValue: false,
             bindable: true,
-            hidden: (_, sidePanelContent) => {
-                return !sidePanelContent.form?.uid;
-            },
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'boolean',
-                tooltip: 'A boolean value',
-            },
-            /* wwEditor:end */
         },
         validation: {
             label: 'Validation',
             section: 'settings',
             type: 'Formula',
             defaultValue: '',
-            bindable: true,
-            hidden: (content, sidePanelContent) => {
-                return !sidePanelContent.form?.uid || !content.customValidation;
-            },
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'boolean',
-                tooltip: 'A boolean formula for validation',
-            },
-            /* wwEditor:end */
-        },
-        itemElement: {
-            hidden: true,
-            isArray: false,
-            defaultValue: { isWwObject: true, type: 'ww-flexbox' },
-        },
-        value: {
-            type: 'Text',
-            label: 'Initial value',
-            settings: true,
-            bindable: true,
-        },
-        name: {
-            type: 'Text',
-            label: 'Radio name',
-            settings: true,
-            bindable: true,
-        },
-        items: {
-            label: {
-                en: 'Items',
-            },
-            type: 'ObjectList',
-            options: {
-                useSchema: true,
-            },
-            bindable: true,
-            defaultValue: [],
-            settings: true,
-            /* wwEditor:start */
-            bindingValidation: {
-                validations: [
-                    {
-                        type: 'array',
-                    },
-                    {
-                        type: 'object',
-                    },
-                ],
-                tooltip: 'A collection or an array of data: \n\n`myCollection` or `[{}, {}, ...]`',
-            },
-            /* wwEditor:end */
-        },
-        valueFormula: {
-            type: 'Formula',
-            label: 'Value (per item)',
-            options: content => ({
-                template: Array.isArray(content.items)
-                    ? { item: content.items[0], index: 0 }
-                    : { item: null, index: 0 },
-            }),
-            settings: true,
-        },
-        readonlyFormula: {
-            type: 'Formula',
-            label: 'Read only (per item)',
-            options: content => ({
-                template: Array.isArray(content.items)
-                    ? { item: content.items[0], index: 0 }
-                    : { item: null, index: 0 },
-            }),
-            settings: true,
-        },
-        readonly: {
-            label: { en: 'Read only', fr: 'Lecture seule' },
-            type: 'OnOff',
-            bindable: true,
-            defaultValue: false,
-            settings: true,
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'boolean',
-                tooltip: 'A boolean that defines if the input is in readonly: `true | false`',
-            },
-            /* wwEditor:end */
-        },
-        required: {
-            label: { en: 'Required' },
-            type: 'OnOff',
-            bindable: true,
-            defaultValue: false,
-            settings: true,
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'boolean',
-                tooltip: 'A boolean that defines if the input is in readonly: `true | false`',
-            },
-            /* wwEditor:end */
-        },
-        isSelectOnClick: {
-            label: { en: 'Select on click' },
-            type: 'OnOff',
-            bindable: true,
-            defaultValue: true,
-            settings: true,
-            /* wwEditor:start */
-            bindingValidation: {
-                type: 'boolean',
-                tooltip: 'A boolean that defines if the input is automatically selected on click: `true | false`',
-            },
-            /* wwEditor:end */
+            bindable: false,
+            hidden: (content) => !content.customValidation,
         },
     },
 };

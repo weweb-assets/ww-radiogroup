@@ -1,27 +1,12 @@
 <template>
-    <wwSimpleLayout role="radiogroup">
-        <template v-for="(data, index) in content.items" :key="index">
-            <wwLayoutItemContext is-repeat :index="index" :data="data">
-                <Item
-                    :data="data"
-                    :index="index"
-                    :element="content.itemElement"
-                    :selectedValue="selectedValue"
-                    :isSelectOnClick="content.isSelectOnClick"
-                    :isReadonly="content.readonly"
-                    :valueFormula="content.valueFormula"
-                    :readonlyFormula="content.readonlyFormula"
-                    :isEditing="isEditing"
-                    @update:selectedValue="onChange"
-                />
-            </wwLayoutItemContext>
-        </template>
-    </wwSimpleLayout>
+    <div role="radiogroup" :aria-required="content.required" :aria-readonly="content.readonly">
+        <wwLayout path="children" />
+    </div>
 </template>
 
 <script>
-import { provide, computed, inject } from 'vue';
-import Item from './Item.vue';
+import { computed, inject, watch, unref } from 'vue';
+import { useRadioProvider } from './composables/useRadioProvider';
 
 export default {
     props: {
@@ -31,71 +16,109 @@ export default {
         /* wwEditor:end */
         wwElementState: { type: Object, required: true },
     },
-    components: {
-        Item,
-    },
-    emits: ['add-state', 'remove-state', 'update:sidepanel-content'],
+    emits: ['add-state', 'remove-state', 'update:content', 'update:sidepanel-content', 'trigger-event'],
     setup(props, { emit }) {
-        provide(
-            '_wwRadioName',
-            computed(() => props.content.name || props.wwElementState.name || `radio-${props.wwElementState.uid}'}`)
-        );
-        provide(
-            '_wwRadioIsReadonly',
-            computed(() => props.content.readonly)
-        );
-        provide(
-            '_wwRadioIsRequired',
-            computed(() => props.content.required)
-        );
-        const { value: selectedValue, setValue: setSelectedValue } = wwLib.wwVariable.useComponentVariable({
+        // Use WeWeb's component variable for value management
+        const { value: modelValue, setValue } = wwLib.wwVariable.useComponentVariable({
             uid: props.wwElementState.uid,
             name: 'value',
             type: 'any',
             defaultValue: computed(() => props.content.value),
         });
-        provide('_wwRadioSetSelectedValue', setSelectedValue);
-        provide('_wwRadioSelectedValue', selectedValue);
 
-        const isEditing = computed(() => {
-            /* wwEditor:start */
-            return props.wwEditorState.isEditing;
-            /* wwEditor:end */
-            // eslint-disable-next-line no-unreachable
-            return false;
+        const {
+            registeredRadios,
+            selectedValue,
+            radioValues,
+            hasDuplicateValues,
+            duplicateValues,
+        } = useRadioProvider(props, emit, setValue);
+
+        // Sync internal selectedValue with component variable
+        watch(modelValue, (newValue) => {
+            selectedValue.value = newValue;
+        });
+
+        // Watch for external value changes
+        watch(() => props.content.value, (newValue) => {
+            if (newValue !== modelValue.value) {
+                setValue(newValue);
+                emit('trigger-event', { name: 'initValueChange', event: { value: newValue } });
+            }
         });
 
         // Form integration
-        const useForm = inject('_wwForm:useForm', () => ({}));
+        const form = inject('_wwForm:info', null);
+        const useForm = inject('_wwForm:useForm', () => {});
+        
+        const fieldName = computed(() => props.content.fieldName);
+        const validation = computed(() => props.content.validation);
+        const customValidation = computed(() => props.content.customValidation);
+        const required = computed(() => props.content.required);
 
-        // Form field configuration
-        const fieldName = computed(() => props.content?.fieldName);
-        const validation = computed(() => props.content?.validation);
-        const customValidation = computed(() => props.content?.customValidation);
-        const required = computed(() => props.content?.required);
-
-        // Use form integration
         useForm(
-            selectedValue,
-            { fieldName, validation, customValidation, required, initialValue: computed(() => props.content.value) },
-            { elementState: props.wwElementState, emit, sidepanelFormPath: 'form', setValue: setSelectedValue }
+            modelValue,
+            { 
+                fieldName, 
+                validation, 
+                customValidation, 
+                required, 
+                initialValue: computed(() => props.content.value) 
+            },
+            { 
+                elementState: props.wwElementState, 
+                emit, 
+                setValue 
+            }
         );
 
-        return { selectedValue, setSelectedValue, isEditing };
-    },
-    watch: {
-        'content.value'(newValue) {
-            if (newValue === this.value) return;
-            this.setSelectedValue(newValue);
-            this.$emit('trigger-event', { name: 'initValueChange', event: { value: newValue } });
-        },
-    },
-    methods: {
-        onChange(newValue) {
-            if (newValue === this.selectedValue) return;
-            this.setSelectedValue(newValue);
-            this.$emit('trigger-event', { name: 'change', event: { value: newValue } });
-        },
+        // Update readonly state
+        watch(
+            () => props.content.readonly,
+            (isReadonly) => {
+                if (isReadonly) {
+                    emit('add-state', 'readonly');
+                } else {
+                    emit('remove-state', 'readonly');
+                }
+            },
+            { immediate: true }
+        );
+
+        /* wwEditor:start */
+        // Update sidepanel content with radio group state
+        watch(
+            [registeredRadios, hasDuplicateValues, duplicateValues],
+            () => {
+                const registeredRadiosList = [];
+                for (const [uid, valueRef] of registeredRadios.value.entries()) {
+                    registeredRadiosList.push({
+                        uid,
+                        value: unref(valueRef)
+                    });
+                }
+
+                emit('update:sidepanel-content', {
+                    path: 'radiogroupState',
+                    value: {
+                        registeredRadios: registeredRadiosList,
+                        hasDuplicateValues: hasDuplicateValues.value,
+                        duplicateValues: duplicateValues.value,
+                        form: form ? {
+                            uid: form.uid,
+                            name: form.name?.value,
+                        } : null,
+                    },
+                });
+            },
+            { immediate: true, deep: true }
+        );
+        /* wwEditor:end */
+
+        return {
+            modelValue,
+            setValue,
+        };
     },
 };
 </script>

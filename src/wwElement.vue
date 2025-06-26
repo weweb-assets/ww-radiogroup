@@ -135,12 +135,12 @@ This radio group exposes the following data through local context:
 - **hasSelection**: Boolean indicating if a radio is selected
 
 ### Usage:
-Access this context in child elements using the key 'ww-radiogroup'
+Access this context in child elements using the key 'radiogroup'
         `;
         
         // Register local context
         wwLib.wwElement.useRegisterElementLocalContext(
-            'ww-radiogroup',
+            'radiogroup',
             localData,
             {},  // No methods
             markdown

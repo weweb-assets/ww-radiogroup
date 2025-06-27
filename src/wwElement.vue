@@ -1,7 +1,7 @@
 <template>
-    <div :id="inputId" role="radiogroup" :aria-required="content.required" :aria-readonly="content.readonly" class="ww-radiogroup">
+    <fieldset :id="inputId" :aria-required="content.required" :aria-readonly="content.readonly" class="ww-radiogroup">
         <wwLayout path="children" />
-    </div>
+    </fieldset>
 </template>
 
 <script>
@@ -127,6 +127,10 @@ Access this context in child elements using the key 'radiogroup'
 <style scoped>
 .ww-radiogroup {
     display: flex;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0; /* Fix for fieldset min-width in some browsers */
 }
 
 .ww-radiogroup > :deep(div) {

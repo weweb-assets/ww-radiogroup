@@ -51,7 +51,17 @@ export function useRadioProvider(props, emit, setValue) {
 
   // Check if a radio is selected
   function isRadioSelected(value) {
-    return unref(selectedValue) === unref(value);
+    const selected = unref(selectedValue);
+    const current = unref(value);
+    const result = selected === current;
+    console.log('isRadioSelected check:', {
+      selectedValue: selected,
+      currentValue: current,
+      isSelected: result,
+      selectedType: typeof selected,
+      currentType: typeof current
+    });
+    return result;
   }
 
   // Provide the radio group context

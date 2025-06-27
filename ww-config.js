@@ -17,7 +17,7 @@ export default {
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
     customSettingsPropertiesOrder: [
-        ['value', 'name'],
+        'value',
         ['fieldName', 'customValidation', 'validation'],
         'readonly',
         'required',
@@ -57,16 +57,6 @@ export default {
             section: 'settings',
             bindable: true,
             defaultValue: '',
-        },
-        name: {
-            type: 'Text',
-            label: 'Radio group name',
-            section: 'settings',
-            bindable: true,
-            defaultValue: '',
-            propertyHelp: {
-                tooltip: 'HTML name attribute for the radio group. If empty, a unique name will be generated.',
-            },
         },
         readonly: {
             label: { en: 'Read only', fr: 'Lecture seule' },

@@ -1,5 +1,5 @@
 <template>
-    <div role="radiogroup" :aria-required="content.required" :aria-readonly="content.readonly" class="ww-radiogroup">
+    <div :id="inputId" role="radiogroup" :aria-required="content.required" :aria-readonly="content.readonly" class="ww-radiogroup">
         <wwLayout path="children" />
     </div>
 </template>
@@ -26,7 +26,7 @@ export default {
             defaultValue: computed(() => props.content.value),
         });
 
-        const { registeredRadios, selectedValue, radioValues, hasDuplicateValues, duplicateValues } = useRadioProvider(
+        const { registeredRadios, selectedValue, radioValues, hasDuplicateValues, duplicateValues, inputId } = useRadioProvider(
             props,
             emit,
             setValue
@@ -118,6 +118,7 @@ Access this context in child elements using the key 'radiogroup'
         return {
             modelValue,
             setValue,
+            inputId,
         };
     },
 };

@@ -1,8 +1,14 @@
-import { onUnmounted, provide, ref, unref, watch, computed } from "vue";
+import { onUnmounted, provide, ref, unref, watch, computed, useId } from "vue";
 
 export function useRadioProvider(props, emit, setValue) {
   const registeredRadios = ref(new Map());
   const selectedValue = ref(props.content.value);
+  
+  // Generate unique ID for the radio group
+  const generatedId = `ww-radio-group-${useId()}`;
+  
+  // Use custom ID if set, otherwise use generated ID
+  const inputId = computed(() => props.wwElementState.props?.attributes?.id || generatedId);
 
   function registerRadio(uid, valueRef) {
     if (!uid) return;
@@ -64,7 +70,12 @@ export function useRadioProvider(props, emit, setValue) {
 
     // Return radio context
     return {
-      name: computed(() => props.content.name || 'radio-group'),
+      name: computed(() => {
+        const fieldName = props.content.fieldName;
+        const elementName = props.wwElementState.name;
+        const suffix = fieldName || elementName || '';
+        return suffix ? `${generatedId}_${suffix}` : generatedId;
+      }),
       selectedValue: computed(() => selectedValue.value),
       isSelected: computed(() => isRadioSelected(valueRef)),
       isReadonly: computed(() => props.content.readonly),
@@ -114,5 +125,6 @@ export function useRadioProvider(props, emit, setValue) {
     radioValues,
     hasDuplicateValues,
     duplicateValues,
+    inputId,
   };
 }

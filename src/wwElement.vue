@@ -126,10 +126,8 @@ Access this context in child elements using the key 'radiogroup'
 
 <style scoped>
 .ww-radiogroup {
+    appearance: none;
     display: flex;
-    border: none;
-    padding: 0;
-    margin: 0;
     min-width: 0; /* Fix for fieldset min-width in some browsers */
 }
 

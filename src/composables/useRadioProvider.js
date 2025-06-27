@@ -28,24 +28,15 @@ export function useRadioProvider(props, emit, setValue) {
   }
 
   function setSelectedValue(value) {
-    console.log('RadioProvider setSelectedValue called:', {
-      newValue: value,
-      currentValue: selectedValue.value,
-      isSameValue: selectedValue.value === value
-    });
-    
     if (selectedValue.value === value) {
-      console.log('Value is already selected, returning');
       return;
     }
     
     selectedValue.value = value;
     // Use WeWeb's setValue to update the component variable
     if (setValue) {
-      console.log('Calling setValue with:', value);
       setValue(value);
     }
-    console.log('Emitting change event with value:', value);
     emit('trigger-event', { name: 'change', event: { value } });
   }
 
@@ -53,15 +44,7 @@ export function useRadioProvider(props, emit, setValue) {
   function isRadioSelected(value) {
     const selected = unref(selectedValue);
     const current = unref(value);
-    const result = selected === current;
-    console.log('isRadioSelected check:', {
-      selectedValue: selected,
-      currentValue: current,
-      isSelected: result,
-      selectedType: typeof selected,
-      currentType: typeof current
-    });
-    return result;
+    return selected === current;
   }
 
   // Provide the radio group context

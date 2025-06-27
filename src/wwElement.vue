@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { computed, inject, watch, unref } from 'vue';
+import { computed, inject, watch } from 'vue';
 import { useRadioProvider } from './composables/useRadioProvider';
 
 export default {
@@ -26,11 +26,8 @@ export default {
             defaultValue: computed(() => props.content.value),
         });
 
-        const { registeredRadios, selectedValue, radioValues, hasDuplicateValues, duplicateValues, inputId } = useRadioProvider(
-            props,
-            emit,
-            setValue
-        );
+        const { registeredRadios, selectedValue, radioValues, hasDuplicateValues, duplicateValues, inputId } =
+            useRadioProvider(props, emit, setValue);
 
         // Sync internal selectedValue with component variable
         watch(modelValue, newValue => {
@@ -49,7 +46,6 @@ export default {
         );
 
         // Form integration
-        const form = inject('_wwForm:info', null);
         const useForm = inject('_wwForm:useForm', () => {});
 
         const fieldName = computed(() => props.content.fieldName);
@@ -86,13 +82,12 @@ export default {
             { immediate: true }
         );
 
-
         // Create local context data
         const localData = computed(() => ({
             selectedValue: modelValue.value,
             hasSelection: modelValue.value !== null && modelValue.value !== undefined && modelValue.value !== '',
         }));
-        
+
         // Markdown documentation
         const markdown = `
 ## Radio Group Local Context
@@ -106,12 +101,12 @@ This radio group exposes the following data through local context:
 ### Usage:
 Access this context in child elements using the key 'radiogroup'
         `;
-        
+
         // Register local context
         wwLib.wwElement.useRegisterElementLocalContext(
             'radiogroup',
             localData,
-            {},  // No methods
+            {}, // No methods
             markdown
         );
 

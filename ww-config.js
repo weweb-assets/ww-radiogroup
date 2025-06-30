@@ -17,12 +17,31 @@ export default {
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
     customSettingsPropertiesOrder: [
-        'value',
+        'formInfobox',
         ['fieldName', 'customValidation', 'validation'],
+        'value',
         'readonly',
         'required',
     ],
     properties: {
+        /* wwEditor:start */
+        form: {
+            editorOnly: true,
+            hidden: true,
+            defaultValue: false,
+        },
+        formInfobox: {
+            type: 'InfoBox',
+            section: 'settings',
+            options: (_, sidePanelContent) => ({
+                variant: sidePanelContent.form?.name ? 'success' : 'warning',
+                icon: 'pencil',
+                title: sidePanelContent.form?.name || 'Unnamed form',
+                content: !sidePanelContent.form?.name && 'Give your form a meaningful name.',
+            }),
+            hidden: (_, sidePanelContent) => !sidePanelContent.form?.uid,
+        },
+        /* wwEditor:end */
         children: {
             label: {
                 en: 'Items',
@@ -90,6 +109,9 @@ export default {
             type: 'Text',
             defaultValue: '',
             bindable: true,
+            hidden: (_, sidePanelContent) => {
+                return !sidePanelContent.form?.uid;
+            },
         },
         customValidation: {
             label: 'Custom validation',
@@ -97,14 +119,19 @@ export default {
             type: 'OnOff',
             defaultValue: false,
             bindable: true,
+            hidden: (_, sidePanelContent) => {
+                return !sidePanelContent.form?.uid;
+            },
         },
         validation: {
             label: 'Validation',
             section: 'settings',
             type: 'Formula',
             defaultValue: '',
-            bindable: false,
-            hidden: (content) => !content.customValidation,
+            bindable: true,
+            hidden: (content, sidePanelContent) => {
+                return !sidePanelContent.form?.uid || !content.customValidation;
+            },
         },
     },
 };

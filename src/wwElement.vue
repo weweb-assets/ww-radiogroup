@@ -46,7 +46,27 @@ export default {
         );
 
         // Form integration
+        const form = inject('_wwForm:info', null);
         const useForm = inject('_wwForm:useForm', () => {});
+        
+        /* wwEditor:start */
+        // Update sidepanel with form info
+        watch(
+            () => form,
+            () => {
+                emit('update:sidepanel-content', {
+                    path: 'form',
+                    value: form
+                        ? {
+                              uid: form.uid,
+                              name: form.name?.value,
+                          }
+                        : null,
+                });
+            },
+            { immediate: true }
+        );
+        /* wwEditor:end */
 
         const fieldName = computed(() => props.content.fieldName);
         const validation = computed(() => props.content.validation);

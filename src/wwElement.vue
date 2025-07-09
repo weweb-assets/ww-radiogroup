@@ -36,6 +36,7 @@ export default {
     },
     emits: ['add-state', 'remove-state', 'update:sidepanel-content'],
     setup(props, { emit }) {
+
         provide(
             '_wwRadioName',
             computed(() => props.content.name || props.wwElementState.name || `radio-${props.wwElementState.uid}'}`)

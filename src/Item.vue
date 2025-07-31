@@ -1,47 +1,81 @@
 <template>
-    <wwLayoutItemContext is-repeat :index="index" :data="data">
-        <wwElement v-bind="container" @click="select" role="radio" :aria-checked="isSelected" tag="label"></wwElement>
-    </wwLayoutItemContext>
+    <wwLocalContext :data="localData" :methods="localMethods" elementKey="radioItem">
+        <wwElement v-bind="element" @click="selectOnClick" role="radio" :aria-checked="isSelected"> </wwElement>
+    </wwLocalContext>
 </template>
 
 <script>
-import { toRef, provide, computed, reactive } from 'vue';
+import { ref, provide, computed } from 'vue';
+
 export default {
     props: {
-        container: { type: Object, required: true },
-        selectedValue: { type: undefined, required: true },
+        data: { type: undefined, required: true },
         index: { type: Number, required: true },
-        item: { required: true },
-        valueFormula: { type: String, required: true },
-        readonly: { type: Boolean, required: true },
+        element: { type: Object, required: true },
+        selectedValue: { type: String, required: true },
+        isSelectOnClick: { type: Boolean, required: true },
+        isReadonly: { type: Boolean, required: true },
+        valueFormula: { type: Object, required: true },
+        readonlyFormula: { type: Object, required: true },
+        isEditing: { type: Boolean, required: true },
     },
     emits: ['update:selectedValue'],
-    setup(props, context) {
+    setup(props, { emit }) {
         const { resolveMappingFormula } = wwLib.wwFormula.useFormula();
 
         const value = computed(() =>
-            resolveMappingFormula(props.valueFormula, { item: props.item, index: props.index })
+            resolveMappingFormula(props.valueFormula, { item: props.data, index: props.index })
+        );
+        const isReadonly = computed(
+            () =>
+                props.isReadonly ||
+                resolveMappingFormula(props.readonlyFormula, { item: props.data, index: props.index })
         );
         const isSelected = computed(() => props.selectedValue === value.value);
-
-        provide('_wwRadioIsChecked', isSelected);
-        provide('_wwRadioValue', value);
+        const clicked = ref(false);
 
         function select() {
-            if (props.readonly) return;
-            context.emit('update:selectedValue', value.value);
+            if (!isReadonly.value) {
+                emit('update:selectedValue', value.value);
+                clicked.value = true;
+            }
         }
 
-        const data = reactive({
-            item: toRef(props, 'item'),
-            value,
+        function selectOnClick() {
+            if (props.isEditing || !props.isSelectOnClick) return;
+            select();
+        }
+
+        const localData = ref({
             isSelected,
-            methods: { select },
+            disabled: isReadonly,
+            data: computed(() => props.data),
         });
 
+        const localMethods = {
+            select: {
+                description: 'Selects the current radio item',
+                method: select,
+                editor: {
+                    label: 'Select',
+                    elementName: 'Radio Item',
+                    icon: 'cursor-click',
+                },
+            },
+        };
+
+        function resetClicked() {
+            clicked.value = false;
+        }
+
+        provide('_wwRadioItemClicked', clicked);
+        provide('_wwRadioItemResetClicked', resetClicked);
+        provide('_wwRadioItemValue', value);
+        provide('_wwRadioIsChecked', isSelected);
+        provide('_wwRadioIsDisabled', isReadonly);
         provide('_wwRadioSelect', select);
 
-        return { select, data, isSelected };
+        return { isReadonly, isSelected, localData, localMethods, selectOnClick };
     },
 };
 </script>

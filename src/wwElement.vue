@@ -1,25 +1,29 @@
 <template>
     <wwSimpleLayout role="radiogroup">
-        <Item
-            v-for="(item, index) in content.items"
-            :key="index"
-            :item="item"
-            :index="index"
-            :container="content.itemContainer"
-            :selectedValue="selectedValue"
-            :valueFormula="content.valueFormula"
-            :readonly="content.readonly"
-            @update:selectedValue="onChange"
-        ></Item>
+        <template v-for="(data, index) in content.items" :key="index">
+            <wwLayoutItemContext is-repeat :index="index" :data="data">
+                <Item
+                    :data="data"
+                    :index="index"
+                    :element="content.itemElement"
+                    :selectedValue="selectedValue"
+                    :isSelectOnClick="content.isSelectOnClick"
+                    :isReadonly="content.readonly"
+                    :valueFormula="content.valueFormula"
+                    :readonlyFormula="content.readonlyFormula"
+                    :isEditing="isEditing"
+                    @update:selectedValue="onChange"
+                />
+            </wwLayoutItemContext>
+        </template>
     </wwSimpleLayout>
 </template>
 
 <script>
+import { provide, computed, inject } from 'vue';
 import Item from './Item.vue';
-import { provide, computed } from 'vue';
 
 export default {
-    components: { Item },
     props: {
         content: { type: Object, required: true },
         /* wwEditor:start */
@@ -27,8 +31,12 @@ export default {
         /* wwEditor:end */
         wwElementState: { type: Object, required: true },
     },
-    emits: ['add-state', 'remove-state'],
-    setup(props) {
+    components: {
+        Item,
+    },
+    emits: ['add-state', 'remove-state', 'update:sidepanel-content'],
+    setup(props, { emit }) {
+
         provide(
             '_wwRadioName',
             computed(() => props.content.name || props.wwElementState.name || `radio-${props.wwElementState.uid}'}`)
@@ -47,8 +55,34 @@ export default {
             type: 'any',
             defaultValue: computed(() => props.content.value),
         });
+        provide('_wwRadioSetSelectedValue', setSelectedValue);
+        provide('_wwRadioSelectedValue', selectedValue);
 
-        return { selectedValue, setSelectedValue };
+        const isEditing = computed(() => {
+            /* wwEditor:start */
+            return props.wwEditorState.isEditing;
+            /* wwEditor:end */
+            // eslint-disable-next-line no-unreachable
+            return false;
+        });
+
+        // Form integration
+        const useForm = inject('_wwForm:useForm', () => ({}));
+
+        // Form field configuration
+        const fieldName = computed(() => props.content?.fieldName);
+        const validation = computed(() => props.content?.validation);
+        const customValidation = computed(() => props.content?.customValidation);
+        const required = computed(() => props.content?.required);
+
+        // Use form integration
+        useForm(
+            selectedValue,
+            { fieldName, validation, customValidation, required, initialValue: computed(() => props.content.value) },
+            { elementState: props.wwElementState, emit, sidepanelFormPath: 'form', setValue: setSelectedValue }
+        );
+
+        return { selectedValue, setSelectedValue, isEditing };
     },
     watch: {
         'content.value'(newValue) {

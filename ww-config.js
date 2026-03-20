@@ -13,8 +13,8 @@ export default {
     },
     states: ['readonly'],
     triggerEvents: [
-        { name: 'change', label: { en: 'On change' }, event: { value: '' }, default: true },
-        { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
+        { name: 'change', label: { en: 'On change' }, event: { value: '' }, default: true, description: "Run when the value changes." },
+        { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' }, description: "Run when the initial value changes." },
     ],
     properties: {
         items: {
